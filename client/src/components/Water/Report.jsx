@@ -56,7 +56,6 @@ const Report = () => {
             <option value="No water supply">No water supply</option>
             <option value="Low water pressure">Low water pressure</option>
             <option value="Water leak">Water leak</option>
-            <option value="Dirty water">Dirty water</option>
             <option value="Other">Other</option>
           </select>
         </div>
