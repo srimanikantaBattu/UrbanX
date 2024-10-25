@@ -14,9 +14,11 @@ MongoClient.connect(DB_URL)
     const db = client.db("urbanx");
     const usersCollection = db.collection("usersCollection");
     const temporaryCollection = db.collection('temporaryCollection');
+    const hospitalsCollection = db.collection('hospitalsCollection');
 
     app.set('usersObj', usersCollection);
     app.set('temporaryObj', temporaryCollection);
+    app.set('hospitalsObj', hospitalsCollection);
 
     console.log('Connected to database');
   })
@@ -25,8 +27,11 @@ MongoClient.connect(DB_URL)
   });
 
 
-  const userApp = require("./APIs/user-api");
-  app.use('/user-api', userApp);
+const userApp = require("./APIs/user-api");
+const hospitalApp = require("./APIs/hospital-api");
+
+app.use('/hospital-api', hospitalApp);
+app.use('/user-api', userApp);
 
 app.get("/", (req, res) => {
   res.send("Hello urbanx!");
