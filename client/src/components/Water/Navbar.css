@@ -1,0 +1,57 @@
+/* Navbar Container */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 14px 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-bottom: 2px solid #e5e7eb;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  
+  /* Logo Styling */
+  .logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #007bff;
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
+  }
+  .logo:hover {
+    color: #0056b3;
+  }
+  
+  /* Navigation Links Container */
+  .nav-items {
+    display: flex;
+    gap: 24px;
+  }
+  
+  /* Link Styling */
+  .nav-link {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: color 0.3s ease, background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  /* Link Hover Effects */
+  .nav-link:hover {
+    color: #ffffff;
+    background-color: #007bff;
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+  }
+  
+  /* Active Link Styling */
+  .nav-link.active {
+    color: #ffffff;
+    background-color: #0056b3;
+  }
+  
