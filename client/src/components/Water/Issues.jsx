@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useIssues } from './IssuesContext'; // Import the context
 
 const Issues = () => {
   const [activeTab, setActiveTab] = useState('reported');
+  const { issues } = useIssues(); // Get issues from context
 
   // Table content based on active tab
   const renderTableContent = () => {
@@ -18,12 +20,14 @@ const Issues = () => {
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b border-gray-200 hover:bg-gray-50">
-                <td className="p-3">1</td>
-                <td className="p-3">No water supply</td>
-                <td className="p-3">October 20, 2024</td>
-                <td className="p-3">October 21, 2024</td>
-              </tr>
+              {issues.map((issue, index) => (
+                <tr className="border-b border-gray-200 hover:bg-gray-50" key={index}>
+                  <td className="p-3">{index + 1}</td>
+                  <td className="p-3">{issue.issue}</td>
+                  <td className="p-3">{issue.reportedOn}</td>
+                  <td className="p-3">{issue.assignedOn}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         );
@@ -43,15 +47,17 @@ const Issues = () => {
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b border-gray-200 hover:bg-gray-50">
-                <td className="p-3">1</td>
-                <td className="p-3">Low water pressure</td>
-                <td className="p-3">Main Street, Sector 5</td>
-                <td className="p-3">October 18, 2024</td>
-                <td className="p-3">October 19, 2024</td>
-                <td className="p-3">John Doe</td>
-                <td className="p-3">Pending Verification</td>
-              </tr>
+              {issues.map((issue, index) => (
+                <tr className="border-b border-gray-200 hover:bg-gray-50" key={index}>
+                  <td className="p-3">{index + 1}</td>
+                  <td className="p-3">{issue.issue}</td>
+                  <td className="p-3">{issue.location}</td>
+                  <td className="p-3">{issue.reportedOn}</td>
+                  <td className="p-3">{issue.assignedOn}</td>
+                  <td className="p-3">{issue.technician}</td>
+                  <td className="p-3">Pending Verification</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         );
@@ -70,14 +76,18 @@ const Issues = () => {
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b border-gray-200 hover:bg-gray-50">
-                <td className="p-3">1</td>
-                <td className="p-3">Water leak</td>
-                <td className="p-3">Park Avenue, Block A</td>
-                <td className="p-3">October 15, 2024</td>
-                <td className="p-3">October 16, 2024</td>
-                <td className="p-3">Jane Smith</td>
-              </tr>
+              {/* Here you could add resolved issues similarly, if you have a mechanism to change the state of issues */}
+              {/* For now, we'll keep it simple and just show reported issues */}
+              {issues.map((issue, index) => (
+                <tr className="border-b border-gray-200 hover:bg-gray-50" key={index}>
+                  <td className="p-3">{index + 1}</td>
+                  <td className="p-3">{issue.issue}</td>
+                  <td className="p-3">{issue.location}</td>
+                  <td className="p-3">{issue.reportedOn}</td>
+                  <td className="p-3">{issue.assignedOn}</td>
+                  <td className="p-3">{issue.technician}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         );
@@ -125,3 +135,4 @@ const Issues = () => {
 };
 
 export default Issues;
+

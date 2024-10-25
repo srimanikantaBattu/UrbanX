@@ -1,18 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  Tooltip,
-  CartesianGrid,
-  Legend,
-  ResponsiveContainer,
+  LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, Legend, ResponsiveContainer
 } from 'recharts';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'tailwindcss/tailwind.css';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const WaterHome = () => {
   const [flowRateData, setFlowRateData] = useState([]);
@@ -23,6 +17,7 @@ const WaterHome = () => {
   const pipeDiameter = 0.1; // 10 cm
   const pipeArea = Math.PI * Math.pow(pipeDiameter / 2, 2); // m²
   const waterDensity = 1000; // kg/m³
+  const navigate = useNavigate(); // Initialize navigate
 
   useEffect(() => {
     const fetchData = async () => {
@@ -62,6 +57,10 @@ const WaterHome = () => {
   const averageFlowRateM3S = averageFlowRate / 1000 / 60;
   const averagePressure = (Math.pow(averageFlowRateM3S, 2) * waterDensity) / Math.pow(pipeArea, 2);
 
+  const handleReportIssue = () => {
+    navigate('/report'); // Navigate to the Report component
+  };
+
   return (
     <div className="flex flex-col items-center min-h-screen bg-gray-50 p-6">
       <h1 className="text-3xl font-bold text-blue-700 mb-8">Water Flow Insights Dashboard</h1>
@@ -74,8 +73,8 @@ const WaterHome = () => {
           <ResponsiveContainer width="100%" height={350}>
             <LineChart data={chartData} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="time" label={{ value: 'Time', position: 'insideBottomRight', offset: -5 }} />
-              <YAxis label={{ value: 'Flow Rate (LPM)', angle: -90, position: 'insideLeft', offset: 10 }} />
+              <XAxis dataKey="time" />
+              <YAxis />
               <Tooltip />
               <Legend />
               <Line type="monotone" dataKey="flowRate" name="Water Flow Rate (LPM)" stroke="#38bdf8" strokeWidth={2} />
@@ -107,7 +106,10 @@ const WaterHome = () => {
               <span>⚠️</span>
               <p className="text-center font-medium">Low water supply detected</p>
             </div>
-            <button className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-200 shadow mt-4">
+            <button 
+              onClick={handleReportIssue} 
+              className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-200 shadow mt-4"
+            >
               Report Issue
             </button>
           </div>
