@@ -44,6 +44,36 @@
 
 
 
+// import React from 'react';
+// import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// import Home from './components/Water/Home';
+// import Issues from './components/Water/Issues';
+// import Report from './components/Water/Report';
+// import Profile from './components/Water/Profile';
+// import Navbar from './components/Water/Navbar';
+// const App = () => {
+//   return (
+//     <Router>
+//       <div>
+//         {/* Render Navbar at the top */}
+//         <Navbar />
+
+//         {/* Wrap Route components inside Routes */}
+//         <Routes>
+//           <Route path="/" element={<Home />} />
+//           <Route path="/issues" element={<Issues />} />
+//           <Route path="/report" element={<Report />} />
+//           <Route path="/profile" element={<Profile />} />
+//         </Routes>
+//       </div>
+//     </Router>
+//   );
+// };
+
+// export default App;
+
+
+
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/Water/Home';
@@ -51,22 +81,26 @@ import Issues from './components/Water/Issues';
 import Report from './components/Water/Report';
 import Profile from './components/Water/Profile';
 import Navbar from './components/Water/Navbar';
+import { IssuesProvider } from './components/Water/IssuesContext'; // Import IssuesProvider
+
 const App = () => {
   return (
-    <Router>
-      <div>
-        {/* Render Navbar at the top */}
-        <Navbar />
+    <IssuesProvider> {/* Wrap the application with IssuesProvider */}
+      <Router>
+        <div>
+          {/* Render Navbar at the top */}
+          <Navbar />
 
-        {/* Wrap Route components inside Routes */}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/issues" element={<Issues />} />
-          <Route path="/report" element={<Report />} />
-          <Route path="/profile" element={<Profile />} />
-        </Routes>
-      </div>
-    </Router>
+          {/* Wrap Route components inside Routes */}
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/issues" element={<Issues />} />
+            <Route path="/report" element={<Report />} />
+            <Route path="/profile" element={<Profile />} />
+          </Routes>
+        </div>
+      </Router>
+    </IssuesProvider>
   );
 };
 
