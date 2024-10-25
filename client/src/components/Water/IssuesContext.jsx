@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 
-// Create a context for issues
+
 const IssuesContext = createContext();
 
 export const useIssues = () => {

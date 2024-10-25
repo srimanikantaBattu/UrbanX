@@ -18,7 +18,7 @@ function Login() {
       if(result.data.message==='login success'){
         localStorage.setItem('emailId',data.emailId);
         alert('login successfull')
-        navigate('/leaks');
+        navigate('/homewater');
       }
       else if(result.data.message==='Invalid Email'){
         alert('Invalid Email')
