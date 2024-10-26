@@ -8,6 +8,9 @@ import Home from './components/Water/WaterHome'
 import Issues from './components/Water/Issues'
 import Report from './components/Water/Report'
 import Profile from './components/Water/Profile'
+import HospitalPage from './components/health/HospitalPage'
+import Homehealth from './components/health/Home'
+
 function App() {
   const router = createBrowserRouter([
     {
@@ -41,6 +44,13 @@ function App() {
         {
           path:"/profile",
           element:<Profile/>
+        },
+        {
+          path:"/health/hospitalpage",
+          element:<HospitalPage/>
+        },{
+          path:"/healthhome",
+          element:<Homehealth/>
         }
       ]
     }
