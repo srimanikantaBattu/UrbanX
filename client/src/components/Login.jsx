@@ -16,9 +16,16 @@ function Login() {
       const result =await axios .post(`${process.env.REACT_APP_BACK_URL}/user-api/login`,data);
       console.log(result.data.message)
       if(result.data.message==='login success'){
-        localStorage.setItem('emailId',data.emailId);
+        localStorage.setItem('username',result.data.user.username);
+        localStorage.setItem('emailId',result.data.user.emailId);
+        localStorage.setItem('role',result.data.user.role);
         alert('login successfull')
-        navigate('/leaks');
+        console.log(result.data.user.role)
+        if(result.data.user.role==='admin'){
+          navigate('/health/hospitalpage')
+          return
+        }
+        navigate('/healthhome');
       }
       else if(result.data.message==='Invalid Email'){
         alert('Invalid Email')

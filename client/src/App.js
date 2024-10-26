@@ -1,46 +1,64 @@
-// import React from 'react'
-// import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-// import RootLayout from './RootLayout'
-// import Login from './components/Login'
-// import Register from './components/Register'
-// import Otp from './components/Otp'
-// import Home from './components/Home'
-// function App() {
-//   const router = createBrowserRouter([
-//     {
-//       path:'/',
-//       element:<RootLayout/>,
-//       children: [
-//         {
-//           path: "/login",
-//           element: <Login />
-//         },
-//         {
-//           path: "/register",
-//           element: <Register />
-//         },
-//         {
-//           path: "/otp",
-//           element: <Otp />
-//         },
-//         {
-//           path: "/home",
-//           element: <Home />
-//         }
-//       ]
-//     }
-//   ])
+import React from 'react'
+import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import RootLayout from './RootLayout'
+import Login from './components/Login'
+import Register from './components/Register'
+import Otp from './components/Otp'
+import Home from './components/Home'
+import Homehealth from './components/health/Home'
+import HospitalPage from './components/health/HospitalPage'
 
-//   return (
-//     <div className="">
-//       <RouterProvider router={router}>
+function App() {
+  const router = createBrowserRouter([
+    {
+      path:'/',
+      element:<RootLayout/>,
+      children: [
+        {
+          path:'/',
+          element:<Register/>
+        },
+        {
+          path: "/login",
+          element: <Login />
+        },
+        {
+          path: "/register",
+          element: <Register />
+        },
+        {
+          path: "/otp",
+          element: <Otp />
+        },
+        {
+          path: "/home",
+          element: <Home />
+        },
+        {
+          path: "/healthhome",
+          element: <Homehealth />
+        },
+        {
+          path: "/health/hospitalpage",
+          element: <HospitalPage />
+        }
+      ]
+    }
+  ])
 
-//       </RouterProvider>
-//     </div>
-//   )
-// }
+  return (
+    <div className="">
+      <RouterProvider router={router}>
 
-// export default App
+      </RouterProvider>
+    </div>
+  )
+}
+
+export default App
+
+
+
 
 
 
@@ -71,37 +89,3 @@
 // };
 
 // export default App;
-
-
-
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './components/Water/Home';
-import Issues from './components/Water/Issues';
-import Report from './components/Water/Report';
-import Profile from './components/Water/Profile';
-import Navbar from './components/Water/Navbar';
-import { IssuesProvider } from './components/Water/IssuesContext'; // Import IssuesProvider
-
-const App = () => {
-  return (
-    <IssuesProvider> {/* Wrap the application with IssuesProvider */}
-      <Router>
-        <div>
-          {/* Render Navbar at the top */}
-          <Navbar />
-
-          {/* Wrap Route components inside Routes */}
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/issues" element={<Issues />} />
-            <Route path="/report" element={<Report />} />
-            <Route path="/profile" element={<Profile />} />
-          </Routes>
-        </div>
-      </Router>
-    </IssuesProvider>
-  );
-};
-
-export default App;
