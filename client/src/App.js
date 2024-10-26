@@ -3,6 +3,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import RootLayout from './RootLayout'
 import Login from './components/Login'
 import Register from './components/Register'
+import VideoCall from './components/health/VideoCall'
 import Otp from './components/Otp'
 import Home from './components/Water/WaterHome'
 import Issues from './components/Water/Issues'
@@ -51,6 +52,10 @@ function App() {
         },{
           path:"/healthhome",
           element:<Homehealth/>
+        },
+        {
+          path:'/video',
+          element:<VideoCall/>
         }
       ]
     }

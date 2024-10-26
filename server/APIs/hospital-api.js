@@ -82,12 +82,65 @@ hospitalsApp.put('/add-to-connected-list/:username/:emailId/:hospitalId',express
     const emailId = req.params.emailId;
     const hospitalId = req.params.hospitalId;
     await hospitalsCollection.updateOne({ _id: new ObjectId(hospitalId) }, { $pull: { waitingUsers: { username: username, emailId: emailId } } });
-    await hospitalsCollection.updateOne({ _id: new ObjectId(hospitalId) }, { $push: { connectedUsers: { username: username, emailId: emailId } } });
-    //add hospitalid to user hospitals array
-    await usersCollection.updateOne({ username: username }, { $push: { hospitals: hospitalId } });
+    await hospitalsCollection.updateOne({ _id: new ObjectId(hospitalId) }, { $push: { connectedUsers: { username: username, emailId: emailId, requestedMeeting: false } } });
+
+    await usersCollection.updateOne(
+        { username: username },
+        { 
+          $push: { 
+            hospitals: { 
+              hospitalId: hospitalId, 
+              meetingSchedule:""
+            } 
+          } 
+        }
+      );      
 
     res.send({message:"Added to connected list"})
 }))
+
+hospitalsApp.put('/send-request/:username/:emailId/:hospitalId',expressAsyncHandler(async(req,res)=>{
+    const username = req.params.username;
+    const emailId = req.params.emailId;
+    const hospitalId = req.params.hospitalId;
+    // await hospitalsCollection.updateOne({ _id: new ObjectId(hospitalId) }, { $push: { connectedUsers: { username: username, emailId: emailId } } });
+
+    await hospitalsCollection.updateOne(
+        { _id: new ObjectId(hospitalId), "connectedUsers.username": username },
+        { $set: { "connectedUsers.$.requestedMeeting": true } }
+      );
+      
+    res.send({message:"Request sent"})
+}))
+
+hospitalsApp.put('/send-meeting-link/:username/:emailId/:hospitalId/:meetingLink', expressAsyncHandler(async (req, res) => {
+    const { username, emailId, hospitalId, meetingLink } = req.params;
+
+    console.log("Username:", username);
+    console.log("Email ID:", emailId);
+    console.log("Hospital ID:", hospitalId);
+    console.log("Meeting Link:", meetingLink);
+
+    try {
+        // Update the meetingSchedule for the specified hospitalId
+        const updateResult = await usersCollection.updateOne(
+            { username, "hospitals.hospitalId": hospitalId },
+            { $set: { "hospitals.$.meetingSchedule": meetingLink } } // Use `$` positional operator
+        );
+
+        // Check if the update was successful
+        if (updateResult.modifiedCount === 0) {
+            return res.status(400).json({ message: "Failed to update meeting schedule" });
+        }
+
+        // Respond with a success message
+        res.json({ message: "Meeting link sent successfully" });
+    } catch (error) {
+        console.error("Error sending meeting link:", error); // Log the full error for debugging
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}));
+
 
 
 
