@@ -22,10 +22,12 @@ const transporter = nodemailer.createTransport({
 
 let usersCollection;
 let temporaryCollection;
+let hospitalsCollection;
 // get userCollection App
 userApp.use((req, res, next) => {
   usersCollection = req.app.get("usersObj");
   temporaryCollection=req.app.get("temporaryObj");
+  hospitalsCollection=req.app.get("hospitalsObj");
   next();
 });
 
@@ -159,7 +161,17 @@ userApp.post(
       emailId: userCred.emailId,
     });
     if (dbuser === null) {
-      res.send({ message: "Invalid Email" });
+      // check mail and password in hospital collection
+      const dbhospital = await hospitalsCollection.findOne({
+        emailId: userCred.emailId,
+        password: userCred.password
+      });
+      if (dbhospital === null) {
+        res.send({ message: "Invalid Email" });
+        return;
+      }
+      res.send({ message: "login success", user: dbhospital });
+
     } else {
       // check for password
       const status = await bcryptjs.compare(userCred.password, dbuser.password);

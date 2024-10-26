@@ -57,25 +57,9 @@ function App() {
   ])
 
   return (
-    <IssuesProvider> {/* Wrap the application with IssuesProvider */}
-      <Router>
-        <div>
-          {/* Render Navbar at the top */}
-          <Navbar />
-
-          {/* Wrap Route components inside Routes */}
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/issues" element={<Issues />} />
-            <Route path="/report" element={<Report />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path='/alexa' element={<Alexa />}></Route>
-            <Route path='/video' element={<VideoCall />}></Route>
-            <Route path='/image' element={<ImageToText />}></Route>
-          </Routes>
-        </div>
-      </Router>
-    </IssuesProvider>
+    <div>
+      <RouterProvider router={router} />
+    </div>
   );
 };
 

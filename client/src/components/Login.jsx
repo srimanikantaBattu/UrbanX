@@ -7,24 +7,29 @@ function Login() {
 
   const {register, handleSubmit, formState: {errors}} = useForm()
 
-
   const navigate = useNavigate();
-
 
   async function formSubmit(data){
     try{
       const result =await axios .post(`${process.env.REACT_APP_BACK_URL}/user-api/login`,data);
       console.log(result.data.message)
       if(result.data.message==='login success'){
-        localStorage.setItem('username',result.data.user.username);
-        localStorage.setItem('emailId',result.data.user.emailId);
-        localStorage.setItem('role',result.data.user.role);
+        
         alert('login successfull')
-        console.log(result.data.user.role)
+        localStorage.setItem('role',result.data.user.role);
         if(result.data.user.role==='admin'){
+          //set hospital data in json fromat in localstorage
+          localStorage.setItem('username',result.data.user.username);
+          localStorage.setItem('emailId',result.data.user.emailId);
+          localStorage.setItem('hospital',JSON.stringify(result.data.user));
           navigate('/health/hospitalpage')
           return
         }
+
+        localStorage.setItem('username',result.data.user.username);
+        localStorage.setItem('emailId',result.data.user.emailId);
+        localStorage.setItem('role',result.data.user.role);
+        console.log(result.data.user.role)
         navigate('/healthhome');
       }
       else if(result.data.message==='Invalid Email'){

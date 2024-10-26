@@ -68,7 +68,7 @@ function HospitalPage() {
     fetchWaitingUsers();
     fetchConnectedUsers();
     checkHospital();
-  }, []);
+  }, [waitingUsers]);
 //   username, hospital, role,connectedUsers,waitingUsers
 
   async function connect(username,emailId) {
@@ -126,6 +126,7 @@ function HospitalPage() {
                         <tr>
                             <th className="px-4 py-2 text-center">Name</th>
                             <th className="px-4 py-2 text-center">Email</th>
+                            <th className="px-4 py-2 text-center">Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -133,7 +134,7 @@ function HospitalPage() {
                             <tr key={index}>
                                 <td className="border px-4 py-2">{user.username}</td>
                                 <td className="border px-4 py-2">{user.emailId}</td>
-                                <button className="px-3 py-2 bg-green-950 rounded-lg text-white ms-3" onClick={()=>connect(user.username,user.emailId)} >Accept</button>
+                                <td className="border m-auto text-center"><button className="px-3 py-1 mb-2 mt-1 bg-green-950 rounded-lg text-white text-center" onClick={()=>connect(user.username,user.emailId)} >Accept</button></td>
                             </tr>
                         ))}
                     </tbody>
