@@ -29,9 +29,11 @@ MongoClient.connect(DB_URL)
 
 const userApp = require("./APIs/user-api");
 const hospitalApp = require("./APIs/hospital-api");
+const alexaApp = require("./APIs/alexa-api")
 
 app.use('/hospital-api', hospitalApp);
 app.use('/user-api', userApp);
+app.use('/alexa-api', alexaApp);
 
 app.get("/", (req, res) => {
   res.send("Hello urbanx!");

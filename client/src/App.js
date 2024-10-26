@@ -79,7 +79,10 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/Water/Home';
 import Issues from './components/Water/Issues';
 import Report from './components/Water/Report';
+import ImageToText from './components/health/ImageToText';
 import Profile from './components/Water/Profile';
+import VideoCall from './components/health/VideoCall';
+import Alexa from './components/health/Alexa';
 import Navbar from './components/Water/Navbar';
 import { IssuesProvider } from './components/Water/IssuesContext'; // Import IssuesProvider
 
@@ -97,6 +100,9 @@ const App = () => {
             <Route path="/issues" element={<Issues />} />
             <Route path="/report" element={<Report />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path='/alexa' element={<Alexa />}></Route>
+            <Route path='/video' element={<VideoCall />}></Route>
+            <Route path='/image' element={<ImageToText />}></Route>
           </Routes>
         </div>
       </Router>
