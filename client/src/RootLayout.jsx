@@ -6,7 +6,6 @@ function RootLayout() {
        <div className="" style={{minHeight:"90vh"}}>
        <Outlet />
        </div>
-       {/* <Footer /> */}
     </div>
   )
 }

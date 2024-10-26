@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useIssues } from './IssuesContext'; // Import the context
+import Navbar from './Navbar';
 
 const Issues = () => {
   const [activeTab, setActiveTab] = useState('reported');
@@ -98,7 +99,9 @@ const Issues = () => {
   };
 
   return (
-    <div className="p-6">
+    <div>
+        <Navbar/>
+        <div className="p-6">
       <div className="flex justify-around mb-6">
         <button
           onClick={() => setActiveTab('reported')}
@@ -130,6 +133,7 @@ const Issues = () => {
       <div className="overflow-x-auto bg-white shadow-lg rounded-lg p-6">
         {renderTableContent()}
       </div>
+    </div>
     </div>
   );
 };
