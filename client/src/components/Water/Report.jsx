@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useIssues } from './IssuesContext'; // Import the context
+import Navbar from './Navbar';
 
 const Report = () => {
   const [issue, setIssue] = useState('');
@@ -41,7 +42,9 @@ const Report = () => {
   };
 
   return (
-    <div className="flex flex-col items-center p-8 bg-gray-100 min-h-screen">
+    <div>
+        <Navbar/>
+        <div className="flex flex-col items-center p-8 bg-gray-100 min-h-screen">
       <h2 className="text-2xl font-semibold mb-6">Report an Issue</h2>
       <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-lg" onSubmit={handleSubmit}>
         <div className="mb-4">
@@ -127,6 +130,7 @@ const Report = () => {
           Submit
         </button>
       </form>
+    </div>
     </div>
   );
 };

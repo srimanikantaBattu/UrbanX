@@ -64,8 +64,10 @@ userApp.post(
         emailId: newUser.emailId,
         password: newUser.password,
         username: newUser.username,
-        otp: otp
-      }
+        otp: otp,
+        hospitals: [] ,
+        role: "user"
+      };
 
       // store otp in temporary collection 
       const tempUser=await temporaryCollection.findOne({emailId: newUser.emailId});
@@ -109,7 +111,9 @@ userApp.post("/check-otp",expressAsyncHandler(async(req,res)=>{
     const registeredData = {
       username: tempData.username,
       emailId: tempData.emailId,
-      password: tempData.password
+      password: tempData.password,
+      hospitals: [],
+      role: "user"
     }
     sendUserDataToDatabase(registeredData);
     res.send({ message: "User is created" });
@@ -120,7 +124,6 @@ userApp.post("/check-otp",expressAsyncHandler(async(req,res)=>{
 userApp.get("/get-tempuser/:emailId",expressAsyncHandler(async(req,res)=>{
   const emailId = req.params.emailId;
   const tempData = await temporaryCollection.findOne({emailId: emailId});
-  console.log("tempdata",tempData);
   res.send({payload:tempData});
 }))
 
@@ -152,7 +155,6 @@ userApp.post(
     // get cred object from client
     const userCred = req.body;
     // check for username
-    console.log(userCred);
     const dbuser = await usersCollection.findOne({
       emailId: userCred.emailId,
     });
@@ -180,4 +182,66 @@ userApp.post(
     }
   })
 );
+
+
+userApp.get(
+  "/check-hospital/:username/:hospitalId",
+  expressAsyncHandler(async (req, res) => {
+    const { username, hospitalId } = req.params;
+    // const hospitalId = new ObjectId(hospital);
+
+
+    try {
+      // Find the user document by username
+      const user = await usersCollection.findOne({ username: username });
+
+      if (!user) {
+        // Respond false if user is not found
+        return res.send(false);
+      }
+
+      // Check if hospitals array exists and if hospital ID exists in the array
+      const hospitalExists = Array.isArray(user.hospitals) && 
+                             user.hospitals.some(
+                               (hospital) => hospital.toString() === hospitalId
+                             );
+
+      // Respond with true if hospital exists in user's hospitals, otherwise false
+      res.send(hospitalExists);
+    } catch (error) {
+      console.error("Error checking hospital:", error);
+      res.status(500).send({ message: "Internal Server Error" });
+    }
+  })
+);
+
+
+
+userApp.put(
+  "/connect-hospital/:username/:hospitalId",
+  expressAsyncHandler(async (req, res) => {
+    const { username, hospitalId } = req.params;
+    // const hospitalId = new ObjectId(hospital);
+
+    
+
+    //insert the hospital id into the user document
+    try {
+      const response = await usersCollection.updateOne(
+        { username: username },
+        { $push: { hospitals: hospitalId } }
+      );
+      res.send({ message: "Hospital connected successfully" });
+    } catch (error) {
+      console.error("Error connecting hospital:", error);
+      res.status(500).send({ message: "Internal Server Error" });
+    }
+
+  })
+);
+
+
+
+
+
 module.exports = userApp;
