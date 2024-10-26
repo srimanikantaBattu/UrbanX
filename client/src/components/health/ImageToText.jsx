@@ -1,3 +1,66 @@
+// // src/App.js
+// import React, { useState } from 'react';
+// import axios from 'axios';
+
+// function App() {
+//     const [image, setImage] = useState(null);
+//     const [text, setText] = useState('');
+//     const [message, setMessage] = useState('');
+
+//     const handleImageUpload = (event) => {
+//         setImage(event.target.files[0]);
+//     };
+
+//     const handleSubmit = async (event) => {
+//         event.preventDefault();
+
+//         if (!image) {
+//             alert("Please upload an image");
+//             return;
+//         }
+
+//         const formData = new FormData();
+//         formData.append('image', image);
+
+//         try {
+//             const response = await axios.post(`${process.env.REACT_APP_BACK_URL}/alexa-api/google-vision`, formData, {
+//                 headers: {
+//                     'Content-Type': 'multipart/form-data',
+//                 },
+//             });
+//             setText(response.data.text);
+//             setMessage("Text extracted successfully!");
+//         } catch (error) {
+//             console.error('Error processing image:', error);
+//             setMessage("Failed to process the image. Try again.");
+//         }
+//     };
+
+//     return (
+//         <div className="App">
+//             <h1>Image to Text using Google Vision API</h1>
+//             <form onSubmit={handleSubmit}>
+//                 <input
+//                     type="file"
+//                     onChange={handleImageUpload}
+//                     accept="image/*"
+//                     required
+//                 />
+//                 <button type="submit">Extract Text</button>
+//             </form>
+//             {message && <p>{message}</p>}
+//             {text && (
+//                 <div className="text-output">
+//                     <h2>Extracted Text:</h2>
+//                     <p>{text}</p>
+//                 </div>
+//             )}
+//         </div>
+//     );
+// }
+
+// export default App;
+
 import React from 'react';
 import Tesseract from 'tesseract.js';
 import { useState } from 'react';

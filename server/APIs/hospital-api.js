@@ -1,6 +1,8 @@
 //create express mini user api App
 const exp = require('express')
-const hospitalsApp = exp.Router()
+const hospitalsApp = exp.Router();
+const axios = require('axios');
+const fs = require('fs');
 const { ObjectId } = require('mongodb');
 
 //import asynchrous handler to handle asynchronous error
