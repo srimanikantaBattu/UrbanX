@@ -202,28 +202,33 @@ userApp.get(
     const { username, hospitalId } = req.params;
     // const hospitalId = new ObjectId(hospital);
 
-
     try {
       // Find the user document by username
       const user = await usersCollection.findOne({ username: username });
-
+    
       if (!user) {
         // Respond false if user is not found
         return res.send(false);
       }
-
-      // Check if hospitals array exists and if hospital ID exists in the array
-      const hospitalExists = Array.isArray(user.hospitals) && 
-                             user.hospitals.some(
-                               (hospital) => hospital.toString() === hospitalId
-                             );
-
-      // Respond with true if hospital exists in user's hospitals, otherwise false
-      res.send(hospitalExists);
+    
+      // Find the hospital object with the specified hospitalId
+      const hospitalObj = user.hospitals.find(
+        (hospital) => hospital.hospitalId.toString() === hospitalId
+      );
+    
+      // Check if the hospital object exists
+      if (hospitalObj) {
+        // Respond with true and the meeting schedule data
+        res.send({ exists: true, meetingSchedule: hospitalObj.meetingSchedule });
+      } else {
+        // Respond with false if the hospital is not found
+        res.send({ exists: false });
+      }
     } catch (error) {
       console.error("Error checking hospital:", error);
       res.status(500).send({ message: "Internal Server Error" });
     }
+
   })
 );
 
@@ -252,8 +257,32 @@ userApp.put(
   })
 );
 
+userApp.get('/particular-hospital/:username/:hospitalId', expressAsyncHandler(async (req, res) => {
+  const username = req.params.username;
+  const hospitalId = req.params.hospitalId;
 
+  try {
+      // Find the user document by username
+      const user = await usersCollection.findOne({ username: username });
 
+      if (!user) {
+          return res.status(404).send({ message: "User not found" });
+      }
+
+      // Find the specific hospital in the user's hospitals array
+      const hospital = user.hospitals.find(hospital => hospital.hospitalId.toString() === hospitalId);
+
+      if (!hospital) {
+          return res.status(404).send({ message: "Hospital not found in user's hospitals" });
+      }
+
+      // If the hospital is found, return its details
+      res.send(hospital);
+  } catch (error) {
+      console.error("Error fetching hospital:", error);
+      res.status(500).send({ message: "Internal Server Error" });
+  }
+}));
 
 
 module.exports = userApp;

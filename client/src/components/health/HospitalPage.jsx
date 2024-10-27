@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { MdAddCall } from "react-icons/md";
+import { useForm } from "react-hook-form";
 
 function HospitalPage() {
+  const { register, handleSubmit } = useForm();
+
   const username = localStorage.getItem("username");
   const emailId = localStorage.getItem("emailId");
   const hospitalString = localStorage.getItem("hospital");
