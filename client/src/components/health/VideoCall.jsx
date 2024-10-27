@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
 
 
 function randomID(len) {
@@ -23,6 +25,22 @@ export function getUrlParams(
 }
 
 export default function VideoCall() {
+  const username = localStorage.getItem("username");
+  const email = localStorage.getItem("emailId");
+  const [link,setLink] = React.useState('');
+  async function sendData() {
+    console.log(link);
+    const video = {meetingLink:link,hospitalID:state.hospital._id,username:username , emailId:email};
+    try {
+      let response = await axios.post(`${process.env.REACT_APP_BACK_URL}/hospital-api/send-video`, video);
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  // useLocation hook to access the location object
+  let {state} = useLocation();
+  console.log(state);
       const roomID = getUrlParams().get('roomID') || randomID(5);
       let myMeeting = async (element) => {
      // generate Kit Token
@@ -55,10 +73,16 @@ export default function VideoCall() {
   };
 
   return (
+    <div className="">
     <div
       className="myCallContainer"
       ref={myMeeting}
-      style={{ width: '100vw', height: '100vh' }}
+      style={{ width: '100vw' , height: '100vh' }}
     ></div>
+    <div className='text-center pb-20'>
+    <input onChange={(e)=>{setLink(e.target.value)}} className='border border-gray-300 px-3 py-1' type="text" name="" id="" />
+    <button className='border rounded-lg ms-2 px-3 py-1 bg-black text-white' onClick={sendData}>Send meeting ID</button>
+    </div>
+    </div>
   );
 }

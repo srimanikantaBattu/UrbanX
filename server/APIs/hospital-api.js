@@ -7,13 +7,15 @@ const { ObjectId } = require('mongodb');
 
 //import asynchrous handler to handle asynchronous error
 const expressAsyncHandler = require('express-async-handler');
+const { console } = require('inspector');
+
 
 require('dotenv').config()
 
 
 let hospitalsCollection;
+let videoCollection;
 let usersCollection;
-//get userCollection this app level middleware--- it is required by every route
 hospitalsApp.use((req,res,next)=>{
     hospitalsCollection = req.app.get('hospitalsObj')
     usersCollection = req.app.get('usersObj')
@@ -21,8 +23,6 @@ hospitalsApp.use((req,res,next)=>{
 })
 
 hospitalsApp.get('/hospitals',expressAsyncHandler(async(req,res)=>{
-    
-
     const hospitals = await hospitalsCollection.find({}).toArray()
     //send response
     res.send(hospitals)
@@ -58,9 +58,12 @@ hospitalsApp.get('/waiting-users/:id',expressAsyncHandler(async(req,res)=>{
 }))
 
 hospitalsApp.get('/connected-users/:id',expressAsyncHandler(async(req,res)=>{
-    const id = req.params.id;
-    const hospital = await hospitalsCollection.findOne({ _id: new ObjectId(id) });
-    res.send(hospital.connectedUsers);
+    const id = String(req.params.id);
+    let videoCollection = req.app.get('videoObj')
+    console.log("came here")
+    console.log(id)
+    const hospital = await videoCollection.find({ hospitalID: id }).toArray();
+    res.send(hospital);
 }))
 
 hospitalsApp.put('/add-to-waiting-list/:username/:emailId/:hospitalId',expressAsyncHandler(async(req,res)=>{
@@ -77,16 +80,40 @@ hospitalsApp.put('/add-to-waiting-list/:username/:emailId/:hospitalId',expressAs
     res.send({message:"Added to waiting list"})
 }))
 
-hospitalsApp.put('/add-to-connected-list/:username/:emailId/:hospitalId',expressAsyncHandler(async(req,res)=>{
-    const username = req.params.username;
-    const emailId = req.params.emailId;
-    const hospitalId = req.params.hospitalId;
-    await hospitalsCollection.updateOne({ _id: new ObjectId(hospitalId) }, { $pull: { waitingUsers: { username: username, emailId: emailId } } });
-    await hospitalsCollection.updateOne({ _id: new ObjectId(hospitalId) }, { $push: { connectedUsers: { username: username, emailId: emailId } } });
-    //add hospitalid to user hospitals array
-    await usersCollection.updateOne({ username: username }, { $push: { hospitals: hospitalId } });
+hospitalsApp.put('/add-to-connected-list/:username/:emailId/:hospitalId', expressAsyncHandler(async (req, res) => {
+    const { username, emailId, hospitalId } = req.params;
 
-    res.send({message:"Added to connected list"})
+    try {
+        // Find the hospital and add the user to the connectUsers array
+        const result = await hospitalsCollection.updateOne(
+            { _id:  new ObjectId(hospitalId) }, // Find the hospital by its ID
+            { $push: { connectedUsers: { username, emailId } } } // Add user to connectUsers array
+        );
+
+        const result2 = await usersCollection.updateOne(
+            { username: username },
+            { $push: { hospitals: new ObjectId(hospitalId) } }
+        );
+
+
+        if (result.modifiedCount > 0) {
+            res.send({ message: "Added to connected list" });
+        } else {
+            res.status(404).send({ message: "Hospital not found or already connected" });
+        }
+    } catch (error) {
+        console.error("Error adding to connected list:", error);
+        res.status(500).send({ message: "Failed to add to connected list" });
+    }
+}));
+
+
+hospitalsApp.post('/send-video',expressAsyncHandler(async(req,res)=>{
+    const video = req.body;
+    console.log(video)
+    let videoCollection = req.app.get('videoObj')
+    await videoCollection.insertOne(video);
+    res.send({message:"Video added"})
 }))
 
 

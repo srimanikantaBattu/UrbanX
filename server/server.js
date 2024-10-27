@@ -15,10 +15,12 @@ MongoClient.connect(DB_URL)
     const usersCollection = db.collection("usersCollection");
     const temporaryCollection = db.collection('temporaryCollection');
     const hospitalsCollection = db.collection('hospitalsCollection');
+    const videoCollection = db.collection('videoCollection');
 
     app.set('usersObj', usersCollection);
     app.set('temporaryObj', temporaryCollection);
     app.set('hospitalsObj', hospitalsCollection);
+    app.set('videoObj', videoCollection);
 
     console.log('Connected to database');
   })
